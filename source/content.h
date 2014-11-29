@@ -12,8 +12,8 @@
 #include <QtWidgets/QWidget>
 # include <QLayout>
 # include "QVBoxLayout"
-#include <QtWidgets/QTableView>
-#include <QtWidgets/QTableWidget>
+# include "QCheckBox"
+
 
 
 class Content : public QWidget
@@ -25,13 +25,13 @@ public:
     QPushButton *VSyncPriceButton;
     QPushButton *VParamDBButton;
     QPushButton *VExitButton;
+    QCheckBox *VCreateRawFolder;
 
     QGroupBox *VButtonGroup;
     QHBoxLayout *horizontalLayot;
     QVBoxLayout *verLayot;
 
-    QTableView *VTable;
-    QTableWidget *WTable;
+
 
 signals:
 

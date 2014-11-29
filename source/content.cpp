@@ -3,32 +3,26 @@
 Content::Content(QWidget *parent) :
     QWidget(parent)
 {
-    //создание объекта таблицы
-    VTable =new QTableView();
-    WTable= new QTableWidget ;
-    // создание вида горизонтального расположениея кнопок
-    horizontalLayot =new QHBoxLayout();
-    horizontalLayot->addWidget(VTable);
-    horizontalLayot->addWidget(WTable);
-/*
-    VOpenPriceButton=new  QPushButton("Открыть прайс");
-    VSyncPriceButton=new  QPushButton("Синхронизация");
-    VParamDBButton=new  QPushButton("Параметры");
-    VExitButton=new  QPushButton("Выход");
-    horizontalLayot->addWidget(VOpenPriceButton);
-    horizontalLayot->addWidget(VSyncPriceButton);
-    horizontalLayot->addWidget(VParamDBButton);
-    horizontalLayot->addWidget(VExitButton);
-*/
-    //создание вида вертикального размещения элементов
+    //
+    VCreateRawFolder =new QCheckBox();
+
+    VCreateRawFolder->setText("создать подпапку для raw файлов");
     verLayot= new QVBoxLayout();
+    VButtonGroup = new QGroupBox();
+    VButtonGroup->setTitle("Параметры");
+    horizontalLayot =new QHBoxLayout();
 
-    verLayot->addLayout(horizontalLayot);
-    //verLayot->addWidget(VTable);
+    // создание вида горизонтального расположениея кнопок
+    verLayot->addWidget(VCreateRawFolder);
+
+    VButtonGroup->setLayout(verLayot);
+
+    //создание вида вертикального размещения элементов
 
 
-    VTable->setShowGrid(true);
 
-    setLayout(verLayot);
+
+
+    setLayout(VButtonGroup->layout());
 
 }

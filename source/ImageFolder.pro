@@ -16,9 +16,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         imagefolder.cpp \
+        content.cpp
+
    
 
 HEADERS  += imagefolder.h \
+            content.h\
    
 
 

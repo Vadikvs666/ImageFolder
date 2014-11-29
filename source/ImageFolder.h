@@ -43,6 +43,7 @@ signals:
 private slots:
     void quit();//выход из приложения
     void open();//функция открытия файла прайса
+    void sync();
  
 
 
