@@ -10,18 +10,17 @@ QT +=gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = inputGoods
+TARGET = ImageFolder
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
+        imagefolder.cpp \
    
 
-HEADERS  += mainwindow.h \
+HEADERS  += imagefolder.h \
    
 
-FORMS    += mainwindow.ui \
-        searchpost.ui
+
 
 RESOURCES +=
