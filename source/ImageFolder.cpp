@@ -1,16 +1,17 @@
 
 #include "ImageFolder.h"
+#include "QMessageBox"
 
 ImageFolder::ImageFolder(QWidget *parent)
     : QMainWindow(parent)
 {
     //заголовок формы
-    this->setWindowTitle("ImageByFolderOrganizer");
+    this->setWindowTitle("Фото органайзер");
 
     //создание экшенов
     openAction = new QAction(tr("Выбрать папку с фотографиями"), this);
     resultFolderAction= new QAction(tr("Выбрать конечную  папку "), this);
-    syncAction = new QAction(tr("Выполнить опрерацию"), this);
+    syncAction = new QAction(tr("Выполнить операцию"), this);
     exitAction = new QAction(tr("Выход"), this);
 
 
@@ -62,6 +63,11 @@ ImageFolder::~ImageFolder()
 
 }
 
+bool ImageFolder::checkResult()
+{
+    return QFileInfo::exists(ResultFolder);
+}
+
 void ImageFolder::quit()
 {
     emit goodbuy();
@@ -86,7 +92,30 @@ void ImageFolder::open()
 
 void ImageFolder::sync()
 {
+    bool error=false;
+    //Проверка папки с исходниками
+    if(!ImageFolder::checkDest())
+    {
+        QMessageBox::warning(this, tr("Предупреждение"),
+                                       tr("Выберите папку с изображениями "),
+                                       QMessageBox::Ok);
+        error=true;
+    }
+    //проверка конечной папки
+    if(!ImageFolder::checkResult())
+    {
+        QMessageBox::warning(this, tr("Предупреждение"),
+                                       tr("Выберите папку для конечных изображений "),
+                                       QMessageBox::Ok);
+        error=true;
+    }
 
+    if(!error)
+    {
+        //выполнение перемещения фотографий
+        QMessageBox::information( this, "Все в порядке","Выполнение"
+                                       );
+    }
 }
 
 void ImageFolder::resultfolderselectaction()
@@ -98,3 +127,7 @@ void ImageFolder::resultfolderselectaction()
 }
 
 
+bool ImageFolder::checkDest()
+{
+    return QFileInfo::exists(DestinationFolder);
+}

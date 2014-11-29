@@ -37,6 +37,10 @@ public:
     QString ResultFolder;
 
 
+    bool checkDest();
+    bool checkResult();
+
+
 signals:
     void goodbuy();
     void compleet();
