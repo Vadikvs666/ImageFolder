@@ -4,16 +4,22 @@ Content::Content(QWidget *parent) :
     QWidget(parent)
 {
     //
-    VCreateRawFolder =new QCheckBox();
+    VButtonGroup = new QGroupBox(tr("Параметры"));
+    VButtonGroup->setFlat(false);
 
-    VCreateRawFolder->setText("создать подпапку для raw файлов");
+    VCreateRawFolder =new QCheckBox();
+    VCreateRawFolder->setText("Cоздать подпапку для raw файлов");
+
+    VSaveOriginalFolderNAme=new QCheckBox();
+    VSaveOriginalFolderNAme->setText("Сохранить оригинальные названия папок в подпапках");
+
     verLayot= new QVBoxLayout();
-    VButtonGroup = new QGroupBox();
-    VButtonGroup->setTitle("Параметры");
     horizontalLayot =new QHBoxLayout();
 
     // создание вида горизонтального расположениея кнопок
     verLayot->addWidget(VCreateRawFolder);
+    verLayot->addWidget(VSaveOriginalFolderNAme);
+    verLayot->addStretch(1);
 
     VButtonGroup->setLayout(verLayot);
 

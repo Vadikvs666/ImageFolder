@@ -26,6 +26,7 @@ public:
     QPushButton *VParamDBButton;
     QPushButton *VExitButton;
     QCheckBox *VCreateRawFolder;
+    QCheckBox *VSaveOriginalFolderNAme;
 
     QGroupBox *VButtonGroup;
     QHBoxLayout *horizontalLayot;
