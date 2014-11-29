@@ -6,7 +6,7 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <QAction>
-
+#include <content.h>
 #include "QFileDialog"
 #include "QFile"
 #include "QTextStream"
@@ -29,6 +29,7 @@ public:
 
     QMenuBar *menu;
     QStatusBar *bar;
+    Content *content;
 
     
 
