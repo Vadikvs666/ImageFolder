@@ -1,65 +1,100 @@
-#ifndef IMAGEFOLDER_H
-#define IMAGEFOLDER_H
 
-#include <QMainWindow>
-#include <QVector>
-#include <QMenu>
-#include <QMenuBar>
-#include <QAction>
-#include <content.h>
-#include "model.h"
-#include "dbsingl.h"
-#include "../products/products.h"
-#include "../products/listelem.h"
-#include "QFileDialog"
-#include "QFile"
-#include "QTextStream"
-#include "QTableWidgetItem"
-#include "QSqlTableModel"
-#include <QStatusBar>
+#include "ImageFolder.h"
 
-class ImageFolder : public QMainWindow
+ImageFolder::ImageFolder(QWidget *parent)
+    : QMainWindow(parent)
 {
-    Q_OBJECT
+    //заголовок формы
+    this->setWindowTitle("WWW.HOZTOVATY-OMSK.RU");
 
-public:
-    ImageFolder(QWidget *parent = 0);
-    ~ImageFolder();
+    //создание экшенов
+    openAction = new QAction(tr("Открыть прайс"), this);
+    loadSyteAction = new QAction(tr("загрузить из сайта"), this);
+    syncAction = new QAction(tr("Синхронизация"), this);
+    exitAction = new QAction(tr("Выход"), this);
+    paramAction = new QAction(tr("Параметры"), this);
 
-    QAction *openAction  ;
-    QAction *syncAction ;
-    QAction *exitAction;
-    QAction *loadSyteAction;
-    QAction *paramAction;
-
-    QMenuBar *menu;
-    QStatusBar *bar;
-
-    Content *content;
-
-    QVector<Products> prod;
-    QVector<QStringList> prod_list;
-
-    QString remK(QString str);
+    //соединение со слотами функций
+    connect(openAction, SIGNAL(triggered()), this, SLOT(open()));
+    connect(syncAction, SIGNAL(triggered()), this, SLOT(sync()));
+    connect(exitAction, SIGNAL(triggered()), this, SLOT(quit()));
+    connect(loadSyteAction, SIGNAL(triggered()), this, SLOT(load()));
+    connect(paramAction, SIGNAL(triggered()), this, SLOT(param()));
 
 
-signals:
-    void goodbuy();
-    void compleet();
+    //создание центрального виджета
+    content = new Content(this);
 
-private slots:
-    void quit();//выход из приложения
-    void open();//функция открытия файла прайса
-    void sync();
-    void load();
-    void param();
-    void process_line(QString line);
-    void done_load(bool err);
-    void loadcomleat();
-    void addToTableWidget(QVector<QStringList> list);
+    //создание меню
+    menu = new QMenuBar;
+
+    //добавление пункта меню и экшенов
+    QMenu *fileMenu = new QMenu(tr("Файл"), this);
+    fileMenu->addAction(openAction);
+    fileMenu->addAction(loadSyteAction);
+    fileMenu->addSeparator();
+    fileMenu->addAction(exitAction);
+
+    QMenu *workMenu = new QMenu(tr("Действия"), this);
+    workMenu->addAction(syncAction);
+    workMenu->addAction(paramAction);
+
+    menu->addMenu(fileMenu);
+    menu->addMenu(workMenu);
+
+    bar =new QStatusBar;
+
+    bar->showMessage("Загрузите прайс лист..",10000);
+
+    setMenuBar(menu);
+    setCentralWidget(content);
+    setStatusBar(bar);
+
+    //сигнал по завершению загрузки из БД
+    connect(this, SIGNAL(compleet()), this, SLOT(loadcomleat()));
 
 
 
-};
+}
 
-#endif // IMAGEFOLDER_H
+ImageFolder::~ImageFolder()
+{
+
+}
+
+void ImageFolder::quit()
+{
+    emit goodbuy();
+    this->close();
+}
+
+void ImageFolder::open()
+{
+
+    bool error=false;
+    //вызов окна выбора файла
+    QString  fileName = QFileDialog::getOpenFileName(this, tr("Открыть файл"),"/home",tr("прайс (*.csv)"));
+
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        //Обработка ошибки открытия файла
+        error=true;
+
+    }
+    else
+    {
+
+        QTextStream in(&file);
+        while (!in.atEnd())
+        {
+           QString line = in.readLine();
+           process_line(line);
+        }
+    }
+    done_load(error);
+
+
+}
+
+
