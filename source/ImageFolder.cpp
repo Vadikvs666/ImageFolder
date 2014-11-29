@@ -1,6 +1,67 @@
 
 #include "ImageFolder.h"
 #include "QMessageBox"
+#include "QVector"
+#include "QDate"
+#include "QtMultimedia/QMediaMetaData"
+#include "QtMultimedia/QMediaObject"
+#include <QImage>
+    #include <QCamera>
+
+
+
+bool checkFolder(QString Dir)
+{
+    return QFileInfo::exists(Dir);
+}
+
+/*
+ *  Функия проверки является ли папка поддерикторией
+ *
+ */
+bool checkIsSubFolder(QString Dest,QString Res)
+{
+    return Res.contains(Dest, Qt::CaseInsensitive);
+}
+
+QDate GetDatebyExif(QString filename)
+{
+
+}
+
+bool CreateFolderByDate(QDate date, QString ResultFolder )
+{
+    QString dir=ResultFolder+"//"+date.year()+"//"+date.month();
+    QDir path(dir);
+    if(!checkFolder(dir))
+    {
+        return path.mkdir(dir);
+    }else return true;
+}
+
+void action(bool creatRaw,bool saveOrgFaleName, QString Dest, QString Result)
+{
+   QVector<QString> Dirs;
+   QVector<QString> Files;
+   QDir dir(Dest);
+   dir.setFilter(QDir::Files |  QDir::NoSymLinks);
+   dir.setSorting(QDir::Size);
+   QFileInfoList list = dir.entryInfoList();
+   for (int i = 0; i < list.size(); ++i)
+   {
+        QFileInfo fileInfo = list.at(i);
+        Files.push_back(fileInfo.fileName());
+        GetDatebyExif(fileInfo.fileName())
+   }
+    dir.setFilter(QDir::AllDirs|  QDir::NoDotAndDotDot);
+    QFileInfoList list2 = dir.entryInfoList();
+    for (int i = 0; i < list2.size(); ++i)
+    {
+         QFileInfo fileInfo = list2.at(i);
+         Dirs.push_back(fileInfo.fileName());
+    }
+
+}
 
 ImageFolder::ImageFolder(QWidget *parent)
     : QMainWindow(parent)
@@ -63,10 +124,7 @@ ImageFolder::~ImageFolder()
 
 }
 
-bool ImageFolder::checkResult()
-{
-    return QFileInfo::exists(ResultFolder);
-}
+
 
 void ImageFolder::quit()
 {
@@ -94,7 +152,7 @@ void ImageFolder::sync()
 {
     bool error=false;
     //Проверка папки с исходниками
-    if(!ImageFolder::checkDest())
+    if(!checkFolder(DestinationFolder))
     {
         QMessageBox::warning(this, tr("Предупреждение"),
                                        tr("Выберите папку с изображениями "),
@@ -102,19 +160,27 @@ void ImageFolder::sync()
         error=true;
     }
     //проверка конечной папки
-    if(!ImageFolder::checkResult())
+    if(!checkFolder(ResultFolder))
     {
         QMessageBox::warning(this, tr("Предупреждение"),
                                        tr("Выберите папку для конечных изображений "),
                                        QMessageBox::Ok);
         error=true;
     }
-
+    //Проверка
+    if(checkIsSubFolder(DestinationFolder,ResultFolder))
+    {
+        QMessageBox::warning(this, tr("Предупреждение"),
+                                       tr("Выберите другую папку для конечных изображений... Нельзя чтобы  папка располагалась в папке с изображениями "),
+                                       QMessageBox::Ok);
+        error=true;
+    }
     if(!error)
     {
         //выполнение перемещения фотографий
         QMessageBox::information( this, "Все в порядке","Выполнение"
                                        );
+        action(true,true, DestinationFolder, ResultFolder);
     }
 }
 
@@ -127,7 +193,4 @@ void ImageFolder::resultfolderselectaction()
 }
 
 
-bool ImageFolder::checkDest()
-{
-    return QFileInfo::exists(DestinationFolder);
-}
+

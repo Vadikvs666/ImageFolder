@@ -37,8 +37,7 @@ public:
     QString ResultFolder;
 
 
-    bool checkDest();
-    bool checkResult();
+
 
 
 signals:
