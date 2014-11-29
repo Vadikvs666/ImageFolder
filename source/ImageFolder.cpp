@@ -9,13 +9,14 @@ ImageFolder::ImageFolder(QWidget *parent)
 
     //создание экшенов
     openAction = new QAction(tr("Выбрать папку с фотографиями"), this);
-
+    resultFolderAction= new QAction(tr("Выбрать конечную  папку "), this);
     syncAction = new QAction(tr("Выполнить опрерацию"), this);
     exitAction = new QAction(tr("Выход"), this);
 
 
     //соединение со слотами функций
     connect(openAction, SIGNAL(triggered()), this, SLOT(open()));
+     connect(resultFolderAction, SIGNAL(triggered()), this, SLOT(resultfolderselectaction()));
     connect(syncAction, SIGNAL(triggered()), this, SLOT(sync()));
     connect(exitAction, SIGNAL(triggered()), this, SLOT(quit()));
 
@@ -30,6 +31,7 @@ ImageFolder::ImageFolder(QWidget *parent)
     //добавление пункта меню и экшенов
     QMenu *fileMenu = new QMenu(tr("Файл"), this);
     fileMenu->addAction(openAction);
+    fileMenu->addAction(resultFolderAction);
 
     fileMenu->addSeparator();
     fileMenu->addAction(exitAction);
@@ -49,7 +51,7 @@ ImageFolder::ImageFolder(QWidget *parent)
     setCentralWidget(content);
     setStatusBar(bar);
 
-    //сигнал по завершению загрузки из БД
+
 
 
 
@@ -69,28 +71,15 @@ void ImageFolder::quit()
 void ImageFolder::open()
 {
 
-    bool error=false;
+
     //вызов окна выбора файла
-    QString  fileName = QFileDialog::getOpenFileName(this, tr("Открыть файл"),"/home",tr("прайс (*.csv)"));
+    DestinationFolder = QFileDialog::getExistingDirectory(this, tr("Выбрать папку с фотографиями"),"/home", QFileDialog::ShowDirsOnly
+                                                    | QFileDialog::DontResolveSymlinks);
+    content->DestLabel->setText(DestinationFolder);
 
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        //Обработка ошибки открытия файла
-        error=true;
 
-    }
-    else
-    {
 
-        QTextStream in(&file);
-        while (!in.atEnd())
-        {
-           QString line = in.readLine();
-           //process_line(line);
-        }
-    }
-   // done_load(error);
+
 
 
 }
@@ -98,6 +87,14 @@ void ImageFolder::open()
 void ImageFolder::sync()
 {
 
+}
+
+void ImageFolder::resultfolderselectaction()
+{
+    ResultFolder = QFileDialog::getExistingDirectory(this, tr("Выбрать конечную папку"),"/home", QFileDialog::ShowDirsOnly
+                                                     | QFileDialog::DontResolveSymlinks);
+
+    content->ResultLabel->setText(ResultFolder);
 }
 
 

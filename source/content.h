@@ -13,6 +13,7 @@
 # include <QLayout>
 # include "QVBoxLayout"
 # include "QCheckBox"
+# include "QLabel"
 
 
 
@@ -25,12 +26,19 @@ public:
     QPushButton *VSyncPriceButton;
     QPushButton *VParamDBButton;
     QPushButton *VExitButton;
+
+    QLabel *DestLabel;
+    QLabel *ResultLabel;
+
     QCheckBox *VCreateRawFolder;
     QCheckBox *VSaveOriginalFolderNAme;
 
-    QGroupBox *VButtonGroup;
+    QGroupBox *VGroup1;
+    QGroupBox *VGroup2;
     QHBoxLayout *horizontalLayot;
-    QVBoxLayout *verLayot;
+
+    QVBoxLayout *verLayot1;
+    QVBoxLayout *verLayot2;
 
 
 

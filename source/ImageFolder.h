@@ -24,7 +24,7 @@ public:
     QAction *openAction  ;
     QAction *syncAction ;
     QAction *exitAction;
-    QAction *loadSyteAction;
+    QAction *resultFolderAction;
     QAction *paramAction;
 
     QMenuBar *menu;
@@ -33,7 +33,8 @@ public:
 
     
 
-  
+    QString DestinationFolder;
+    QString ResultFolder;
 
 
 signals:
@@ -44,6 +45,7 @@ private slots:
     void quit();//выход из приложения
     void open();//функция открытия файла прайса
     void sync();
+    void resultfolderselectaction();
  
 
 
