@@ -14,6 +14,7 @@
 # include "QVBoxLayout"
 # include "QCheckBox"
 # include "QLabel"
+#include "params.h"
 
 
 
@@ -27,11 +28,6 @@ public:
     QPushButton *VParamDBButton;
     QPushButton *VExitButton;
 
-    QLabel *DestLabel;
-    QLabel *ResultLabel;
-
-    QCheckBox *VCreateRawFolder;
-    QCheckBox *VSaveOriginalFolderNAme;
 
     QGroupBox *VGroup1;
     QGroupBox *VGroup2;
@@ -40,11 +36,16 @@ public:
     QVBoxLayout *verLayot1;
     QVBoxLayout *verLayot2;
 
+    params *Param;
+
 
 
 signals:
 
+
 public slots:
+    void SetParamCheckBox(int value );
+    void SetLabelName(QString value );
 
 };
 

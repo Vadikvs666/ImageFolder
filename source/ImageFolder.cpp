@@ -1,19 +1,13 @@
 
-#include "ImageFolder.h"
+#include "imagefolder.h"
 #include "QMessageBox"
 #include "QVector"
 #include "QDate"
-#include "QtMultimedia/QMediaMetaData"
-#include "QtMultimedia/QMediaObject"
+
 #include <QImage>
-    #include <QCamera>
 
+#include "qimagemetadata//QImageMetaData.h"
 
-
-bool checkFolder(QString Dir)
-{
-    return QFileInfo::exists(Dir);
-}
 
 /*
  *  Функия проверки является ли папка поддерикторией
@@ -24,48 +18,25 @@ bool checkIsSubFolder(QString Dest,QString Res)
     return Res.contains(Dest, Qt::CaseInsensitive);
 }
 
-QDate GetDatebyExif(QString filename)
-{
 
+
+bool checkSelFolder(QString Dir)
+{
+    QDir dir(Dir);
+    return QFile::exists(Dir);
 }
 
-bool CreateFolderByDate(QDate date, QString ResultFolder )
-{
-    QString dir=ResultFolder+"//"+date.year()+"//"+date.month();
-    QDir path(dir);
-    if(!checkFolder(dir))
-    {
-        return path.mkdir(dir);
-    }else return true;
-}
 
-void action(bool creatRaw,bool saveOrgFaleName, QString Dest, QString Result)
-{
-   QVector<QString> Dirs;
-   QVector<QString> Files;
-   QDir dir(Dest);
-   dir.setFilter(QDir::Files |  QDir::NoSymLinks);
-   dir.setSorting(QDir::Size);
-   QFileInfoList list = dir.entryInfoList();
-   for (int i = 0; i < list.size(); ++i)
-   {
-        QFileInfo fileInfo = list.at(i);
-        Files.push_back(fileInfo.fileName());
-        GetDatebyExif(fileInfo.fileName())
-   }
-    dir.setFilter(QDir::AllDirs|  QDir::NoDotAndDotDot);
-    QFileInfoList list2 = dir.entryInfoList();
-    for (int i = 0; i < list2.size(); ++i)
-    {
-         QFileInfo fileInfo = list2.at(i);
-         Dirs.push_back(fileInfo.fileName());
-    }
-
-}
 
 ImageFolder::ImageFolder(QWidget *parent)
     : QMainWindow(parent)
 {
+    createRawFolder=false;
+    SaveDestinationFolder=false;
+    GetSmallCopy=false;
+    KeapRaw=false;
+    KeapOriginal=false;
+
     //заголовок формы
     this->setWindowTitle("Фото органайзер");
 
@@ -117,6 +88,7 @@ ImageFolder::ImageFolder(QWidget *parent)
 
 
 
+
 }
 
 ImageFolder::~ImageFolder()
@@ -139,7 +111,10 @@ void ImageFolder::open()
     //вызов окна выбора файла
     DestinationFolder = QFileDialog::getExistingDirectory(this, tr("Выбрать папку с фотографиями"),"/home", QFileDialog::ShowDirsOnly
                                                     | QFileDialog::DontResolveSymlinks);
-    content->DestLabel->setText(DestinationFolder);
+    content->Param->setDestinationFolder(DestinationFolder);
+
+    content->findChild<QLabel *>("DestinationFolder")->setText(DestinationFolder);
+
 
 
 
@@ -152,7 +127,7 @@ void ImageFolder::sync()
 {
     bool error=false;
     //Проверка папки с исходниками
-    if(!checkFolder(DestinationFolder))
+    if(!checkSelFolder(DestinationFolder))
     {
         QMessageBox::warning(this, tr("Предупреждение"),
                                        tr("Выберите папку с изображениями "),
@@ -160,7 +135,7 @@ void ImageFolder::sync()
         error=true;
     }
     //проверка конечной папки
-    if(!checkFolder(ResultFolder))
+    if(!checkSelFolder(ResultFolder))
     {
         QMessageBox::warning(this, tr("Предупреждение"),
                                        tr("Выберите папку для конечных изображений "),
@@ -180,7 +155,13 @@ void ImageFolder::sync()
         //выполнение перемещения фотографий
         QMessageBox::information( this, "Все в порядке","Выполнение"
                                        );
-        action(true,true, DestinationFolder, ResultFolder);
+        //action(createRawFolder,SaveDestinationFolder,GetSmallCopy,KeapOriginal,KeapRaw, DestinationFolder, ResultFolder);
+        ActionThread *Th=new ActionThread(content->Param);
+
+        connect(Th,SIGNAL(message(QString)),this,SLOT(setInfoinBar(QString)));
+
+        connect(Th,SIGNAL(log(QString)),this,SLOT(log(QString)));
+        Th->start();
     }
 }
 
@@ -189,8 +170,27 @@ void ImageFolder::resultfolderselectaction()
     ResultFolder = QFileDialog::getExistingDirectory(this, tr("Выбрать конечную папку"),"/home", QFileDialog::ShowDirsOnly
                                                      | QFileDialog::DontResolveSymlinks);
 
-    content->ResultLabel->setText(ResultFolder);
+    content->Param->setResultFolder(ResultFolder);
+
+    content->findChild<QLabel *>("ResultFolder")->setText(ResultFolder);
+
 }
 
+void ImageFolder::setInfoinBar(QString msg)
+{
+    bar->showMessage(msg);
+}
 
+void ImageFolder::log(QString msg)
+{
+    QFile file("out.txt");
+        if (!file.open(QIODevice::Append| QIODevice::Text))
+            return;
+
+
+
+        QTextStream out(&file);
+        out << msg << "\n";
+
+}
 

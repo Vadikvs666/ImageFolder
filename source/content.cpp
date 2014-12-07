@@ -1,27 +1,44 @@
 #include "content.h"
 
+
 Content::Content(QWidget *parent) :
     QWidget(parent)
 {
     //
     VGroup1 = new QGroupBox(tr("Параметры"));
 
+    Param=new params();
 
 
-
-    VCreateRawFolder =new QCheckBox();
-    VCreateRawFolder->setText("Cоздать подпапку для raw файлов");
-
-    VSaveOriginalFolderNAme=new QCheckBox();
-    VSaveOriginalFolderNAme->setText("Сохранить оригинальные названия папок в подпапках");
 
     verLayot1= new QVBoxLayout();
+    verLayot2= new QVBoxLayout();
+    for(int i=0; i<Param->getListofparam().length(); i++ )
+    {
+        param tec_name=Param->getListofparam()[i];
+        if(tec_name.type=="QCheckBox")
+        {
+            QCheckBox *Checkparam =new QCheckBox();
+            Checkparam->setText(tec_name.printValue);
+            Checkparam->setObjectName(tec_name.name);
+            verLayot1->addWidget(Checkparam);
+            connect(Checkparam,SIGNAL(stateChanged(int)),this,SLOT(SetParamCheckBox(int)));
+
+        }
+        if(tec_name.type=="QLabel")
+        {
+            QLabel *Labelparam=new QLabel();
+            Labelparam->setText(tec_name.printValue);
+            Labelparam->setObjectName(tec_name.name);
+           // connect(Param,SIGNAL(FolderChange(QString)),this,SLOT(SetLabelName(QString)));
+            verLayot2->addWidget(Labelparam);
 
 
+        }
 
-    // создание вида горизонтального расположениея кнопок
-    verLayot1->addWidget(VCreateRawFolder);
-    verLayot1->addWidget(VSaveOriginalFolderNAme);
+    }
+
+
     verLayot1->addStretch(1);
 
 
@@ -31,12 +48,6 @@ Content::Content(QWidget *parent) :
 
      VGroup2 = new QGroupBox(tr("Папки"));
 
-     DestLabel=new QLabel("выберите папку исходную");
-     ResultLabel=new QLabel("выберите папку конечную");
-
-     verLayot2= new QVBoxLayout();
-     verLayot2->addWidget(DestLabel);
-     verLayot2->addWidget(ResultLabel);
      VGroup2->setLayout(verLayot2);
 
     horizontalLayot =new QHBoxLayout();
@@ -45,5 +56,21 @@ Content::Content(QWidget *parent) :
 
 
     setLayout(horizontalLayot);
+
+}
+
+void Content::SetParamCheckBox(int value)
+{
+   QString par=sender()->objectName() ;
+   if(value==0)
+   {
+       Param->SetParam(par,"false");
+   } else Param->SetParam(par,"true");
+}
+
+void Content::SetLabelName(QString value )
+{
+
+
 
 }

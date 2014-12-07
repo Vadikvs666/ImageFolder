@@ -6,7 +6,7 @@
 
 QT += core
 QT +=gui
-QT +=multimedia
+
 
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -17,12 +17,19 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         imagefolder.cpp \
-        content.cpp
+        content.cpp \
+    qimagemetadata/QImageMetaData.cpp \
+    actionthread.cpp \
+    params.cpp
 
    
 
 HEADERS  += imagefolder.h \
-            content.h\
+            content.h \
+    qimagemetadata/QImageMetaData.h \
+    qimagemetadata/QImageMetaDataRational.h \
+    actionthread.h \
+    params.h
    
 
 

@@ -12,6 +12,7 @@
 #include "QTextStream"
 
 #include <QStatusBar>
+#include "actionthread.h"
 
 class ImageFolder : public QMainWindow
 {
@@ -35,6 +36,12 @@ public:
 
     QString DestinationFolder;
     QString ResultFolder;
+    bool createRawFolder;
+    bool SaveDestinationFolder;
+    bool GetSmallCopy;
+    bool KeapRaw;
+    bool KeapOriginal;
+    bool SaveResizeInOwnFolder;
 
 
 
@@ -49,6 +56,11 @@ private slots:
     void open();//функция открытия файла прайса
     void sync();
     void resultfolderselectaction();
+    void setInfoinBar(QString msg);
+    void log(QString msg);
+
+
+
  
 
 
