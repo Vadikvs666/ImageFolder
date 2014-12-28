@@ -82,6 +82,7 @@ void ActionThread::run()
 void ActionThread::action(params *p)
 {
     QString Dest=p->getDestinationFolder();
+    QString Folder_name=p->getFolder_name();
     bool creatRaw=p->getCreateRawFolder();
     bool saveOrgFaleName=p->getSaveDestinationFolder();
     bool smalCopy=p->getGetSmallCopy();
@@ -149,7 +150,14 @@ void ActionThread::action(params *p)
 
                      resDir=Result+"/"+year+"/"+month+"/"+saved+"/";
                  }
-                 else resDir=Result+"/"+year+"/"+month+"/";
+                 else
+                 {
+                     if(Folder_name=="Введите название папки для конечной папки"||Folder_name=="")
+                     {
+                        resDir=Result+"/"+year+"/"+month+"/";
+                     }
+                     else resDir=Result+"/"+year+"/"+month+"/"+Folder_name+"/";
+                 }
                  if(creatRaw)
                  {
                      if(fileInfo.suffix()=="nef"||fileInfo.suffix()=="NEF")
