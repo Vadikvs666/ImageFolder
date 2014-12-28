@@ -15,6 +15,13 @@ params::params()
     ResultFolder_.type="QLabel";
     listofparam.push_back(ResultFolder_);
 
+
+    param Folder_name_;
+    Folder_name_.name="Folder_name";
+    Folder_name_.printValue="Введите название папки";
+    Folder_name_.type="QTextEdit";
+    listofparam.push_back(Folder_name_);
+
     param createRawFolder_;
     createRawFolder_.name="createRawFolder";
     createRawFolder_.printValue="Cоздать подпапку для raw файлов";
@@ -146,10 +153,16 @@ void params::SetParam(QString name, QString value)
 
         setDestinationFolder(value);
     }
+
     else if(name=="ResultFolder")
     {
 
         setResultFolder(value);
+
+    }else if(name=="Folder_name")
+    {
+
+        setFolder_name(value);
 
     }else if(name=="createRawFolder")
     {
@@ -203,6 +216,16 @@ QVector<param> params::getListofparam() const
 {
     return listofparam;
 }
+QString params::getFolder_name() const
+{
+    return Folder_name;
+}
+
+void params::setFolder_name(const QString &value)
+{
+    Folder_name = value;
+}
+
 
 void params::setListofparam(const QVector<param> &value)
 {

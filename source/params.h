@@ -50,8 +50,12 @@ public:
 
 
 
+    QString getFolder_name() const;
+
+
 private:
     QString DestinationFolder;
+    QString Folder_name;
     QString ResultFolder;
     bool createRawFolder;
     bool SaveDestinationFolder;
@@ -68,6 +72,7 @@ private:
     void setKeapRaw(bool value);
     void setKeapOriginal(bool value);
     void setSaveResizeInOwnFolder(bool value);
+    void setFolder_name(const QString &value);
 };
 
 #endif // PARAMS_H
