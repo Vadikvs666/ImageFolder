@@ -25,6 +25,16 @@ Content::Content(QWidget *parent) :
             connect(Checkparam,SIGNAL(stateChanged(int)),this,SLOT(SetParamCheckBox(int)));
 
         }
+        if(tec_name.type=="QLineEdit")
+        {
+            QLineEdit *LineEdit =new QLineEdit();
+            LineEdit->setText(tec_name.printValue);
+            LineEdit->setObjectName(tec_name.name);
+
+            verLayot1->addWidget(LineEdit);
+            connect(LineEdit,SIGNAL(textChanged(QString)),this,SLOT(SetTextEdit(QString)));
+
+        }
         if(tec_name.type=="QLabel")
         {
             QLabel *Labelparam=new QLabel();
@@ -66,6 +76,14 @@ void Content::SetParamCheckBox(int value)
    {
        Param->SetParam(par,"false");
    } else Param->SetParam(par,"true");
+}
+
+void Content::SetTextEdit(QString value)
+{
+    QString par=sender()->objectName() ;
+
+        Param->SetParam(par,value);
+
 }
 
 void Content::SetLabelName(QString value )

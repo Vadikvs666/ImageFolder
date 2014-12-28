@@ -11,6 +11,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QWidget>
 # include <QLayout>
+#include <QTextEdit>
 # include "QVBoxLayout"
 # include "QCheckBox"
 # include "QLabel"
@@ -45,6 +46,7 @@ signals:
 
 public slots:
     void SetParamCheckBox(int value );
+    void SetTextEdit(QString value );
     void SetLabelName(QString value );
 
 };

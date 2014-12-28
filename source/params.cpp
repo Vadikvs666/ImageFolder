@@ -19,7 +19,7 @@ params::params()
     param Folder_name_;
     Folder_name_.name="Folder_name";
     Folder_name_.printValue="Введите название папки";
-    Folder_name_.type="QTextEdit";
+    Folder_name_.type="QLineEdit";
     listofparam.push_back(Folder_name_);
 
     param createRawFolder_;
