@@ -200,7 +200,7 @@ void ActionThread::action(params *p)
                                  img.save(tempdir+fileInfo.fileName(),0,70);
                              }
                          }
-                         resDir=resDir+"/"+"original/";
+                         resDir=resDir+"original/";
                      }
 
 
@@ -211,7 +211,7 @@ void ActionThread::action(params *p)
                      {
 
 
-                         resfilename=resDir+"/"+fileInfo.fileName();
+                         resfilename=resDir+fileInfo.fileName();
                          /*  QMessageBox::information(NULL, "Все в порядке",resfilename
                                             );*/
                          emit log("копирование изображения :" + filename);
