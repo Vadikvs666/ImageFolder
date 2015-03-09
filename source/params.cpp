@@ -58,15 +58,8 @@ params::params()
     SaveResizeInOwnFolder_.type="QCheckBox";
    // listofparam.push_back(SaveResizeInOwnFolder_);
 
-    param createDayFolder_;
-    createDayFolder_.name="createDayFolder";
-    createDayFolder_.printValue="Cоздать подпапку с днем фотографии";
-    createDayFolder_.type="QCheckBox";
-    listofparam.push_back(createDayFolder_);
-
 
     setCreateRawFolder(false);
-    setCreateDayFolder(false);
     setSaveDestinationFolder(false);
     setGetSmallCopy(false);
     setKeapRaw(false);
@@ -181,15 +174,6 @@ void params::SetParam(QString name, QString value)
         else setCreateRawFolder(true);
 
      }
-    else if(name=="createDayFolder")
-        {
-
-
-            if(value=="false")
-            setCreateDayFolder(false);
-            else setCreateDayFolder(true);
-
-         }
     else if(name=="SaveDestinationFolder")
     {
 
@@ -237,16 +221,6 @@ QString params::getFolder_name() const
 {
     return Folder_name;
 }
-bool params::getCreateDayFolder() const
-{
-    return createDayFolder;
-}
-
-void params::setCreateDayFolder(bool value)
-{
-    createDayFolder = value;
-}
-
 
 void params::setFolder_name(const QString &value)
 {

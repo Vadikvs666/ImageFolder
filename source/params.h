@@ -53,15 +53,11 @@ public:
     QString getFolder_name() const;
 
 
-    bool getCreateDayFolder() const;
-
-
 private:
     QString DestinationFolder;
     QString Folder_name;
     QString ResultFolder;
     bool createRawFolder;
-    bool createDayFolder;
     bool SaveDestinationFolder;
     bool GetSmallCopy;
     bool KeapRaw;
@@ -77,7 +73,6 @@ private:
     void setKeapOriginal(bool value);
     void setSaveResizeInOwnFolder(bool value);
     void setFolder_name(const QString &value);
-    void setCreateDayFolder(bool value);
 };
 
 #endif // PARAMS_H
