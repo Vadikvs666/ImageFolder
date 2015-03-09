@@ -40,11 +40,9 @@ bool checkFolder(QString Dir)
     } else {
         QString  datetime=metadata->dateAndTimeOriginal();
 
-
        list = datetime.split(":");
-       QString day=list[2];
-       QStringList temp=day.split(" ");
-       list[2]=temp[0];
+
+
 
         }
 
@@ -152,7 +150,6 @@ void ActionThread::action(params *p)
              if(dayFolder)
              {
                  resDir=resDir+"/"+day;
-
              }
              emit message("Выполняется операция с файлом : "+filename);
                  if(saveOrgFaleName)
@@ -160,15 +157,15 @@ void ActionThread::action(params *p)
                      QStringList path=Dest.split("/");
                      QString saved=path.last();
 
-                     resDir=resDir+"/"+saved+"/";
+                     resDir=Result+"/"+year+"/"+month+"/"+saved+"/";
                  }
                  else
                  {
                      if(Folder_name=="Введите название папки для конечной папки"||Folder_name=="")
                      {
-                        ;
+                        resDir=Result+"/"+year+"/"+month+"/";
                      }
-                     else resDir=resDir+"/"+Folder_name+"/";
+                     else resDir=Result+"/"+year+"/"+month+"/"+Folder_name+"/";
                  }
                  if(creatRaw)
                  {
