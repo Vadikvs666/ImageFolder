@@ -148,10 +148,10 @@ void ActionThread::action(params *p)
                  day=IntToStr(date.date().day());
 
              }
-             QString resDir=Result+"/"+year+"/"+month+"/";
+             QString resDir=Result+"/"+year+"/"+month;
              if(dayFolder)
              {
-                 resDir=resDir+"/"+day+"/";;
+                 resDir=resDir+"/"+day;
 
              }
              emit message("Выполняется операция с файлом : "+filename);
@@ -160,7 +160,7 @@ void ActionThread::action(params *p)
                      QStringList path=Dest.split("/");
                      QString saved=path.last();
 
-                     resDir=resDir+saved+"/";
+                     resDir=resDir+"/"+saved+"/";
                  }
                  else
                  {
@@ -168,13 +168,13 @@ void ActionThread::action(params *p)
                      {
                         ;
                      }
-                     else resDir=resDir+Folder_name+"/";
+                     else resDir=resDir+"/"+Folder_name+"/";
                  }
                  if(creatRaw)
                  {
                      if(fileInfo.suffix()=="nef"||fileInfo.suffix()=="NEF")
                      {
-                         resDir=resDir+"RAW/";
+                         resDir=resDir+"/"+"RAW/";
                      }
                  }
                  if(smalCopy)
@@ -187,7 +187,7 @@ void ActionThread::action(params *p)
                          QString tempdir;
                          if(keapOriginal)
                          {
-                              tempdir=resDir+"resize/";
+                              tempdir=resDir+"/"+"resize/";
                          }else  tempdir=resDir;
                          if(CreateFolderByDate(tempdir ))
                          {
@@ -200,7 +200,7 @@ void ActionThread::action(params *p)
                                  img.save(tempdir+fileInfo.fileName(),0,70);
                              }
                          }
-                         resDir=resDir+"original/";
+                         resDir=resDir+"/"+"original/";
                      }
 
 
@@ -211,7 +211,7 @@ void ActionThread::action(params *p)
                      {
 
 
-                         resfilename=resDir+fileInfo.fileName();
+                         resfilename=resDir+"/"+fileInfo.fileName();
                          /*  QMessageBox::information(NULL, "Все в порядке",resfilename
                                             );*/
                          emit log("копирование изображения :" + filename);
