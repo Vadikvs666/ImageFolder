@@ -174,7 +174,7 @@ void ActionThread::action(params *p)
                  {
                      if(fileInfo.suffix()=="nef"||fileInfo.suffix()=="NEF")
                      {
-                         resDir=resDir+"RAW/";
+                         resDir=resDir+"/"+"RAW/";
                      }
                  }
                  if(smalCopy)
@@ -187,7 +187,7 @@ void ActionThread::action(params *p)
                          QString tempdir;
                          if(keapOriginal)
                          {
-                              tempdir=resDir+"resize/";
+                              tempdir=resDir+"/"+"resize/";
                          }else  tempdir=resDir;
                          if(CreateFolderByDate(tempdir ))
                          {
