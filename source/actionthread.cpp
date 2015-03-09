@@ -88,7 +88,6 @@ void ActionThread::action(params *p)
     bool smalCopy=p->getGetSmallCopy();
     bool keapOriginal=p->getKeapOriginal();
     bool keapRaw=p->getKeapRaw();
-    bool dayFolder=p->getCreateDayFolder();
     QString Result=p->getResultFolder();
     QDir dir(Dest);
     dir.setFilter(QDir::Files |  QDir::NoSymLinks);
@@ -110,7 +109,6 @@ void ActionThread::action(params *p)
              QString resfilename;
              QString year ;
              QString month ;
-             QString day ;
              emit log("Получение exif файла " + filename);
              if(d[0]!="Error")
              {
@@ -118,7 +116,6 @@ void ActionThread::action(params *p)
                   {
                           year =d[0];
                          month =d[1];
-                         day =d[2];
                    }
                   else
                   {
@@ -130,7 +127,6 @@ void ActionThread::action(params *p)
                       {
                             month=month_t;
                       }else month="0"+month_t;
-                      day=IntToStr(date.date().day());
                   }
 
              }
@@ -143,14 +139,9 @@ void ActionThread::action(params *p)
                  {
                        month=month_t;
                  }else month="0"+month_t;
-                 day=IntToStr(date.date().day());
 
              }
              QString resDir=Result+"/"+year+"/"+month;
-             if(dayFolder)
-             {
-                 resDir=resDir+"/"+day;
-             }
              emit message("Выполняется операция с файлом : "+filename);
                  if(saveOrgFaleName)
                  {
