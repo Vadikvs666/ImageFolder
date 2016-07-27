@@ -3,7 +3,7 @@
 #include "QMessageBox"
 #include "QVector"
 #include "QDate"
-
+#include <QDebug>
 #include <QImage>
 
 #include "qimagemetadata//QImageMetaData.h"
@@ -20,10 +20,14 @@ bool checkIsSubFolder(QString Dest,QString Res)
 
 
 
+
 bool checkSelFolder(QString Dir)
 {
+    QString sdir=Dir+'/';
     QDir dir(Dir);
-    return QFile::exists(Dir);
+
+    return dir.exists();
+    //return QFile::exists(Dir);
 }
 
 
@@ -110,9 +114,8 @@ void ImageFolder::open()
 
     //вызов окна выбора файла
     DestinationFolder = QFileDialog::getExistingDirectory(this, tr("Выбрать папку с фотографиями"),"/home", QFileDialog::ShowDirsOnly
-                                                    | QFileDialog::DontResolveSymlinks);
+                                                   | QFileDialog::DontResolveSymlinks);
     content->Param->setDestinationFolder(DestinationFolder);
-
     content->findChild<QLabel *>("DestinationFolder")->setText(DestinationFolder);
 
 
@@ -153,13 +156,8 @@ void ImageFolder::sync()
     if(!error)
     {
         //выполнение перемещения фотографий
-        QMessageBox::information( this, "Все в порядке","Выполнение"
-                                       );
-        //action(createRawFolder,SaveDestinationFolder,GetSmallCopy,KeapOriginal,KeapRaw, DestinationFolder, ResultFolder);
         ActionThread *Th=new ActionThread(content->Param);
-
         connect(Th,SIGNAL(message(QString)),this,SLOT(setInfoinBar(QString)));
-
         connect(Th,SIGNAL(log(QString)),this,SLOT(log(QString)));
         Th->start();
     }
@@ -169,9 +167,7 @@ void ImageFolder::resultfolderselectaction()
 {
     ResultFolder = QFileDialog::getExistingDirectory(this, tr("Выбрать конечную папку"),"/home", QFileDialog::ShowDirsOnly
                                                      | QFileDialog::DontResolveSymlinks);
-
     content->Param->setResultFolder(ResultFolder);
-
     content->findChild<QLabel *>("ResultFolder")->setText(ResultFolder);
 
 }
@@ -186,9 +182,6 @@ void ImageFolder::log(QString msg)
     QFile file("out.txt");
         if (!file.open(QIODevice::Append| QIODevice::Text))
             return;
-
-
-
         QTextStream out(&file);
         out << msg << "\n";
 
